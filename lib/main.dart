@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:hive_database/models/notes_model.dart';
+import 'package:path_provider/path_provider.dart';
+import 'homescreen.dart';
+import 'package:hive/hive.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  var directory = await getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
+
+  Hive.registerAdapter(NotesModelAdapter());
+  Hive.openBox<NotesModel>('notes');
+  runApp(HiveApp());
+}
+
+class HiveApp extends StatelessWidget {
+  const HiveApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: HomeScreen(),
+    );
+  }
+}
